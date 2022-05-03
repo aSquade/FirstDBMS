@@ -25,7 +25,6 @@ void ColumnAlterWindow::on_confirmButton_clicked()
     this->close();
 }
 
-
 void ColumnAlterWindow::on_alterMoreButton_clicked()
 {
     ColumnAlterWindow *c =new ColumnAlterWindow;

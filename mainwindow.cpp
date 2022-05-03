@@ -5,12 +5,15 @@
 #include "columnaddwindow.h"
 #include "columnalterwindow.h"
 #include "columndeletewindow.h"
+#include "user.h"
+#include <QString>
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QString usrname,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    username=usrname;
 }
 
 MainWindow::~MainWindow()
@@ -21,7 +24,7 @@ MainWindow::~MainWindow()
 //点击 “创建” 按钮
 void MainWindow::on_createButton_clicked()
 {
-    CreateWindow *c = new CreateWindow;
+    CreateWindow *c = new CreateWindow(username);
     c->setWindowModality(Qt::ApplicationModal);
     c->show();
 }
@@ -29,7 +32,7 @@ void MainWindow::on_createButton_clicked()
 //点击 “删除" 按钮
 void MainWindow::on_deleteButton_clicked()
 {
-    DeleteWindow *d = new DeleteWindow;
+    DeleteWindow *d = new DeleteWindow(username);
     d->setWindowModality(Qt::ApplicationModal);
     d->show();
 }
@@ -37,7 +40,7 @@ void MainWindow::on_deleteButton_clicked()
 //点击 “添加表字段” 按钮
 void MainWindow::on_addColumnButton_clicked()
 {
-    ColumnAddWindow *c = new ColumnAddWindow;
+    ColumnAddWindow *c = new ColumnAddWindow(username);
     c->setWindowModality(Qt::ApplicationModal);
     c->show();
 }
@@ -53,7 +56,7 @@ void MainWindow::on_alterColumnBotton_clicked()
 //点击 “删除表字段” 按钮
 void MainWindow::on_deleteColumnButton_clicked()
 {
-    ColumnDeleteWindow *c = new ColumnDeleteWindow;
+    ColumnDeleteWindow *c = new ColumnDeleteWindow(username);
     c->setWindowModality(Qt::ApplicationModal);
     c->show();
 }

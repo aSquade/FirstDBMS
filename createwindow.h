@@ -1,6 +1,8 @@
 #ifndef CREATEWINDOW_H
 #define CREATEWINDOW_H
-
+#include "user.h"
+#include "database.h"
+#include <QString>
 #include <QMainWindow>
 
 namespace Ui {
@@ -12,7 +14,7 @@ class CreateWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit CreateWindow(QWidget *parent = nullptr);
+    explicit CreateWindow(QString usrname,QWidget *parent = nullptr);
     ~CreateWindow();
 
 private slots:
@@ -24,6 +26,8 @@ private slots:
 
 private:
     Ui::CreateWindow *ui;
+public:
+    QString username;
 };
 
 #endif // CREATEWINDOW_H

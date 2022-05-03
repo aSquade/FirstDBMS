@@ -7,6 +7,11 @@
 #include <iostream>
 #include <QTextStream>
 #include <QByteArray>
+#include <QDir>
+#include <QCoreApplication>
+#include <QFileDialog>
+#include <QDebug>
+#include <QFileInfo>
 using namespace std;
 User::User(QString usrname, QString passwd){
     username=usrname;
@@ -18,8 +23,9 @@ User::~User(){
 
 //检验用户名是否已存在
 int User::check_exist(QString usr){
-    QFile file("user.txt");
-    file.open(QIODevice::ReadOnly|QIODevice::Text);
+    QString fileName = QCoreApplication::applicationDirPath();//到生成文件的debug文件夹里
+    QFile file(fileName+"/data/user.txt");
+    file.open(QIODevice::ReadWrite|QIODevice::Text);
     if(file.isOpen()){
         if(file.size()==0){
             return 0;
@@ -41,9 +47,13 @@ int User::check_exist(QString usr){
         }
     }
 }
+
 //用户信息写入文件
 int User::user_write(User *newUser){
-        QFile file("user.txt");
+        QString fileName = QCoreApplication::applicationDirPath();
+        QFile file(fileName+"/data/user.txt");
+        QDir dir;
+        dir.mkdir(fileName+"/data/"+newUser->username);
         file.open(QIODevice::Append|QIODevice::Text);
         if(file.isOpen()){
             QTextStream in(&file);
@@ -57,7 +67,8 @@ int User::user_write(User *newUser){
 }
 //用户信息读取登录
 int User::user_read(User usr){
-    QFile file("user.txt");
+    QString fileName = QCoreApplication::applicationDirPath();
+    QFile file(fileName+"/data/user.txt");
     file.open(QIODevice::ReadWrite | QIODevice::Text);//文件不存在会自动创建
     if(file.isOpen()){
         if(file.size()){

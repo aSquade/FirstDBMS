@@ -34,17 +34,18 @@ void Login::on_loginButton_clicked()
 {
     QString usrname = loui->UsernameEdit->text();
     QString passwd = loui->passwordEdit->text();
-
+    User usr(usrname,passwd);                   //创建当前用户
     //检查输入内容
     if(usrname==""||passwd==""){
         QMessageBox::information(this,"警告","输入不能为空",QMessageBox::Ok);
     }else{
-         User usr(usrname,passwd);
+
          int logCheck = usr.user_read(usr);
          if(logCheck==0){
              //QMessageBox::information(this,"提示","登录成功！",QMessageBox::Ok);
             this->close();
-            MainWindow *m = new MainWindow;
+             //传入登录的用户名，方便后面进行各种增删改查存数据的操作
+            MainWindow *m = new MainWindow(usr.username);
             m->show();
          }else if(logCheck==-1){
             QMessageBox::information(this,"警告","用户不存在或密码错误！",QMessageBox::Ok);

@@ -2,7 +2,8 @@
 #define DB_CREATEWINDOW_H
 
 #include <QMainWindow>
-
+#include <QMessageBox>
+#include <QString>
 namespace Ui {
 class DB_CreateWindow;
 }
@@ -12,7 +13,7 @@ class DB_CreateWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit DB_CreateWindow(QWidget *parent = nullptr);
+    explicit DB_CreateWindow(QString usrname,QWidget *parent = nullptr);
     ~DB_CreateWindow();
 
 private slots:
@@ -22,6 +23,9 @@ private slots:
 
 private:
     Ui::DB_CreateWindow *ui;
+
+public:
+    QString username;
 };
 
 #endif // DB_CREATEWINDOW_H

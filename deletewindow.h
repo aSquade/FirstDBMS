@@ -1,7 +1,9 @@
 #ifndef DELETEWINDOW_H
 #define DELETEWINDOW_H
-
+#include "user.h"
+#include "database.h"
 #include <QMainWindow>
+#include <QString>
 
 namespace Ui {
 class DeleteWindow;
@@ -12,7 +14,7 @@ class DeleteWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit DeleteWindow(QWidget *parent = nullptr);
+    explicit DeleteWindow(QString usrname,QWidget *parent = nullptr);
     ~DeleteWindow();
 
 private slots:
@@ -24,6 +26,8 @@ private slots:
 
 private:
     Ui::DeleteWindow *ui;
+public:
+    QString username;
 };
 
 #endif // DELETEWINDOW_H

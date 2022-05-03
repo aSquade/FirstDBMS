@@ -2,6 +2,8 @@
 #define TBL_CREATEWINDOW_H
 
 #include <QMainWindow>
+#include <QMessageBox>
+#include <QString>
 
 namespace Ui {
 class TBL_CreateWindow;
@@ -12,7 +14,7 @@ class TBL_CreateWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit TBL_CreateWindow(QWidget *parent = nullptr);
+    explicit TBL_CreateWindow(QString usrname, QWidget *parent = nullptr);
     ~TBL_CreateWindow();
 
 private slots:
@@ -22,6 +24,9 @@ private slots:
 
 private:
     Ui::TBL_CreateWindow *ui;
+
+public:
+    QString username;
 };
 
 #endif // TBL_CREATEWINDOW_H

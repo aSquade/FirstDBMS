@@ -59,7 +59,6 @@ int Register::check_input(QString s1,QString s2,QString s3){
         }
         //三次输入均满足条件，则开始写入文件
         else if(usrRx.exactMatch(s1)&&pwdRx.exactMatch(s2)){
-
             qDebug()<<"格式正确";
             return 1;
             //this->hide();

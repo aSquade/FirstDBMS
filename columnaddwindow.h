@@ -10,9 +10,12 @@ class ColumnAddWindow;
 class ColumnAddWindow : public QMainWindow
 {
     Q_OBJECT
-
+protected:
+    QString databasename;
+    QString username;
+    QString tablename;
 public:
-    explicit ColumnAddWindow(QWidget *parent = nullptr);
+    explicit ColumnAddWindow(QString usrname,QWidget *parent = nullptr);
     ~ColumnAddWindow();
 
 private slots:

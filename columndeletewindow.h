@@ -10,9 +10,12 @@ class ColumnDeleteWindow;
 class ColumnDeleteWindow : public QMainWindow
 {
     Q_OBJECT
-
+protected:
+    QString databasename;
+    QString username;
+    QString tablename;
 public:
-    explicit ColumnDeleteWindow(QWidget *parent = nullptr);
+    explicit ColumnDeleteWindow(QString usrname,QWidget *parent = nullptr);
     ~ColumnDeleteWindow();
 
 private slots:
