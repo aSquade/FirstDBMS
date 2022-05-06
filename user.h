@@ -22,5 +22,6 @@ public:
     int check_exist(QString usr);//检验用户名是否已存在
     int user_write(User *newUser);//用户信息写入文件
     int user_read(User usr);//用户信息读取登录
+    QString toUpperAndLower(QString src);//加密函数
 };
 #endif // USER_H
