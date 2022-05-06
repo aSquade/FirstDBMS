@@ -5,7 +5,6 @@
 #include <QTextStream>
 #include <QStringList>
 #include <iostream>
-#include <QTextStream>
 #include <QByteArray>
 #include <QDir>
 #include <QCoreApplication>
@@ -20,6 +19,18 @@ User::User(QString usrname, QString passwd){
 User::~User(){
 
 }
+QString User::toUpperAndLower(QString src){
+    for(int i = 0; i < src.count(); i++) {
+            QChar curC = src.at(i);
+            if(curC.isUpper()) {
+                curC = curC.toLower();
+            } else if(curC.isLower()){
+                curC = curC.toUpper();
+            }
+            src[i] = curC;
+        }
+        return src;
+}
 
 //检验用户名是否已存在
 int User::check_exist(QString usr){
@@ -28,6 +39,7 @@ int User::check_exist(QString usr){
     file.open(QIODevice::ReadWrite|QIODevice::Text);
     if(file.isOpen()){
         if(file.size()==0){
+            file.close();
             return 0;
         }else{
             QString data;
@@ -55,6 +67,11 @@ int User::user_write(User *newUser){
         QDir dir;
         dir.mkdir(fileName+"/data/"+newUser->username);
         file.open(QIODevice::Append|QIODevice::Text);
+        //进行加密
+        QByteArray text = newUser->password.toLocal8Bit();
+        QByteArray by = text.toBase64();
+        QString str = toUpperAndLower(QString(by));
+        newUser->password = str;
         if(file.isOpen()){
             QTextStream in(&file);
             in<<newUser->username<<":"<<newUser->password<<endl;
@@ -79,13 +96,18 @@ int User::user_read(User usr){
                 data=out.readLine();
                 userData=data.split(":");//以冒号为分隔符存到userData里
                 User *newUser=new User(userData.at(0),userData.at(1));
-                if((usr.username==userData.at(0))&&(usr.password==userData.at(1))){
+                //进行解密
+                QString pw = userData.at(1);
+                QString str = toUpperAndLower(pw);
+                QByteArray text = str.toLocal8Bit();
+                QByteArray by = text.fromBase64(text);
+                pw = QString(by);
+                if((usr.username==userData.at(0))&&(usr.password==pw)){
                     //比对成功，可以登录
                     User::userList.push_back(newUser);
                     userData.clear();//清空，存放下一行
                     file.close();
                     return 0 ;
-
                 }
                 User::userList.push_back(newUser);
                 userData.clear();//清空，存放下一行
@@ -100,6 +122,7 @@ int User::user_read(User usr){
         return -3;
     }
 }
+
 
 
 
