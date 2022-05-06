@@ -21,7 +21,7 @@ public:
     int db_read(QString usrname,QString dbname);      //读取数据库信息
     int check_dbexists(QString usrname,QString dbname);//检查数据库是否存在
     int db_write(QString usrname,QString dbname);     //数据库信息写入
-
+    bool del_directory(const QString &path);//删除文件夹
 };
 
 #endif // DATABASE_H
