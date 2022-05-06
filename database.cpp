@@ -20,6 +20,31 @@ Database::Database(QString usrname,QString dbname){
 Database::~Database(){
 
 }
+bool Database::del_directory(const QString &path){
+    if(path.isEmpty()){
+        return false;
+    }
+    QDir dir(path);
+    if(!dir.exists()){
+        return true;
+    }
+    dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+        QFileInfoList fileList = dir.entryInfoList();
+        foreach (QFileInfo fi, fileList)
+        {
+            if (fi.isFile())
+            {
+                fi.dir().remove(fi.fileName());
+            }
+            else
+            {
+                del_directory(fi.absoluteFilePath());
+            }
+        }
+        return dir.rmpath(dir.absolutePath());
+
+
+}
 //数据库信息写入用户名所在文件夹下的database.txt文件内
 int Database::db_write(QString usrname,QString dbname){
     QString dbName = dbname;
@@ -91,7 +116,7 @@ void Database::db_out(QString usrname,QString dbname){
     QString FileName = QCoreApplication::applicationDirPath();
     QString pathName = FileName+"/data/"+userName;//用户文件夹位置
     QString fileName = pathName+"/"+"database.txt";
-    QString delPath = QString(pathName+"/"+dbName);
+    QString delPath = pathName+"/"+dbName;
     QFile inputfile(fileName);
     QFile sysdb(FileName+"/data/sysDB.db");
     QStringList lines;
@@ -137,8 +162,7 @@ void Database::db_out(QString usrname,QString dbname){
              }
              sysdb2.close();
          }
-         QDir qDir(delPath);
-         qDir.removeRecursively();//删除表文件夹
+         del_directory(delPath);
     }
 }
 
