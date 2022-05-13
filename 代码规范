@@ -1,0 +1,73 @@
+规范化输入：
+
+只允许大小写字母和下划线
+
+除了创建库以外，别的操作都要加上 open database 数据库名 再操作！（打开一次即可
+
+1、创建（create）：（李治慧）
+
+库：create database 数据库名;
+
+表：create table 表名(字段名 字段类型 【约束条件类型】,
+...
+【primary key(字段名,字段名...)】);//这是在一行里的
+
+索引：create index 索引名 on 表名(字段名,字段名,字段名...);
+
+2、删除1（drop）：（万婷钰）
+
+库： drop database 数据库名;
+
+表：drop table 表名;
+
+索引： drop index 索引名 on 表名;
+
+3、删除2（delete）：（万婷钰）
+	
+记录： delete from 表名 where 条件;
+
+4、插入（insert）：
+
+记录： insert into 表名【(字段名,字段名...)】values(值,值,值...);（注意，作为值的字符串都要加单引号）//这是在一行里的
+
+5、更新（update）：
+
+记录： update 表名
+	set 字段名=值,字段名=值...
+	where 条件;（注意，作为值的字符串都要加单引号）//这是在一行里的
+
+6、修改（alter）：
+
+字段：alter table 表名 drop column 字段名;（删除列）   or   alter table 表名 add column 字段名 【约束条件类型】;（新增列）
+
+	alter table 表名 modify 旧名 新名 新类型 【约束条件类型】;（重命名列）	
+
+主键： alter table 表名 drop primary key;
+
+7、重命名（rename）：（张潇艺）
+
+库： rename database 新名 to 旧名;
+
+表:    rename table 新名 to 旧名 in database 库名;
+
+
+8、打开库（open）：（我来）
+
+open database 库名;
+
+9、关闭库（close） ：
+
+close database 库名;
+
+
+
+9、查询（select）：
+
+	select 字段名,字段名...
+	from 表名
+	where 条件
+	group by 字段名
+	having 条件;//这是在一行里的
+
+
+
