@@ -28,6 +28,14 @@ private slots:
 
     void on_deleteColumnButton_clicked();
 
+    void on_insertDataButton_clicked();
+
+    void on_deleteDataButton_clicked();
+
+    void on_clearButton_clicked();
+
+    void on_comfirmButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 public:

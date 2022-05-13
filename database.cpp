@@ -20,6 +20,17 @@ Database::Database(QString usrname,QString dbname){
 Database::~Database(){
 
 }
+
+QString Database::get_dbpath(QString usrname,QString dbname){
+    QString dbName = dbname;
+    QString ndbName = dbName.toLower();
+    QString usrName = usrname;
+    QString FileName = QCoreApplication::applicationDirPath();
+    QString pathName = FileName+"/data/"+usrName;//用户文件夹位置
+    QString fileName = pathName+"/"+"database.txt";
+    return fileName;
+}
+
 bool Database::del_directory(const QString &path){
     if(path.isEmpty()){
         return false;
@@ -47,21 +58,20 @@ bool Database::del_directory(const QString &path){
 }
 //数据库信息写入用户名所在文件夹下的database.txt文件内
 int Database::db_write(QString usrname,QString dbname){
-    QString dbName = dbname;
     QString usrName = usrname;
-    QString FileName = QCoreApplication::applicationDirPath();
-    QString pathName = FileName+"/data/"+usrName;//用户文件夹位置
-    QString fileName = pathName+"/"+"database.txt";
+    QString dbName = dbname;
+    QString fileName = get_dbpath(usrname, dbname);
     QFile file(fileName);
-    QFile sysdb(FileName+"/data/sysDB.db");
+    QFile sysdb(QCoreApplication::applicationDirPath()+"/data/sysDB.db");
     QDir dir;
+    QString pathName = QCoreApplication::applicationDirPath()+"/data/"+usrName;
     dir.mkdir(pathName+"/"+dbName);//创建该数据库所属文件夹
     file.open(QIODevice::Append|QIODevice::Text);
     sysdb.open(QIODevice::Append|QIODevice::Text);
     if(file.isOpen()&&sysdb.isOpen()){
          QFileInfo info(fileName);
          QString str = info.birthTime().toString();
-         QString dbInfo = dbname+"#"+ pathName+"#"+str+"#"+"用户数据库";//#作为分隔符
+         QString dbInfo = dbname+"#"+ pathName+"#"+str+"#"+"用户数据库"+'#'+"lock";//#作为分隔符
          QString dbInfo2= usrName+"#"+dbname+"#"+ pathName+"#"+str+"#"+"用户数据库";
          QTextStream out(&file);//写入
          QTextStream out2(&sysdb);
@@ -80,10 +90,9 @@ int Database::db_write(QString usrname,QString dbname){
 //检查数据库是否存在
 int Database::check_dbexists(QString usrname,QString dbname){
     QString dbName = dbname;
+    QString ndbName = dbName.toLower();
     QString usrName = usrname;
-    QString FileName = QCoreApplication::applicationDirPath();
-    QString pathName = FileName+"/data/"+usrName;//用户文件夹位置
-    QString fileName = pathName+"/"+"database.txt";
+    QString fileName = get_dbpath(usrName, dbName);
     QFile file(fileName);
     file.open(QIODevice::ReadWrite|QIODevice::Text);
     if(file.isOpen()){
@@ -96,23 +105,51 @@ int Database::check_dbexists(QString usrname,QString dbname){
              while(!out.atEnd()){
                  data= out.readLine();
                  QStringList dbData=data.split("#");
-                 if(dbName==dbData.at(0)){
+                 if(ndbName==dbData.at(0).toLower()){
                      //该数据库已存在
-                     file.close();
-                     return -1;
+                     if(dbData.contains("open")){
+                         //已打开
+                         file.close();
+                         return -1;
+                     }else{
+                         //未打开
+                         file.close();
+                         return -2;
+                     }
+
                  }
              }
              file.close();
              return 1;//该数据库不存在
         }
     }
-    return -2;
+    return 3;
+}
+
+//检查数据库是否已打开
+int Database::check_dbopen(QString usrname,QString dbname){
+    int ckex = check_dbexists(usrname, dbname);
+    if(ckex == -1){
+        //数据库存在，且已打开了
+        return 0;
+    }else if(ckex == -2){
+        //数据库存在，但未打开
+        return -1;
+    }else if(ckex ==0||ckex == 1){
+        //数据库不存在
+        return 1;
+    }else{
+        //文件打开失败
+        return 2;
+    }
+
 }
 
  //数据库删除
 void Database::db_out(QString usrname,QString dbname){
     QString userName = usrname;
     QString dbName = dbname;
+    QString ndbName = dbName.toLower();
     QString FileName = QCoreApplication::applicationDirPath();
     QString pathName = FileName+"/data/"+userName;//用户文件夹位置
     QString fileName = pathName+"/"+"database.txt";
@@ -131,7 +168,7 @@ void Database::db_out(QString usrname,QString dbname){
          while(!out.atEnd()){
              data = out.readLine();
              QStringList dbData=data.split("#");
-             if(dbName!=dbData.at(0)){
+             if(ndbName!=dbData.at(0).toLower()){
                  //把不是该数据库的数据库信息复制到链里
                 lines.push_back(data);
              }
@@ -139,7 +176,7 @@ void Database::db_out(QString usrname,QString dbname){
          while(!sysdb.atEnd()){
              sysdata = sysdb.readLine();
              QStringList sysdbData=sysdata.split("#");
-             if(dbName!=sysdbData.at(1)){
+             if(ndbName!=sysdbData.at(1).toLower()){
                  //把不是该数据库的数据库信息复制到链里
                 lines2.push_back(sysdata);
              }

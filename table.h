@@ -28,6 +28,7 @@ public:
     int tbl_exists(QString usrname,QString dbname,QString tblname);
     int table_in(QString usrname,QString dbname,QString tblname,QString colname,QString coltype,QString check_name,QString check);
     void table_out(QString usrname,QString dbname,QString tblname);
+    QString get_path(QString usrname,QString dbname);
 };
 
 #endif // TABLE_H

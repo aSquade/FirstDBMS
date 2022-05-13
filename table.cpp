@@ -47,7 +47,12 @@ int table::coltype_check(QString coltype){
         return 5;
     }
 }
-
+QString table::get_path(QString usrname,QString dbname){
+    QString FileName = QCoreApplication::applicationDirPath();
+    QString pathName = FileName+"/data/"+usrname+"/"+dbname;//用户文件夹位置
+    QString fileName = pathName+"/"+"table.txt";
+    return fileName;
+}
 int table::db_exists(QString usrname,QString dbname){
     QString dbName = dbname;
     QString usrName = usrname;
@@ -87,7 +92,7 @@ int table::tbl_exists(QString usrname,QString dbname,QString tblname){
     QString pathName = FileName+"/data/"+usrName+"/"+dbName;//用户文件夹位置
     QString fileName = pathName+"/"+"table.txt";
     QFile file(fileName);
-    file.open(QIODevice::ReadWrite|QIODevice::Text);
+    file.open(QIODevice::ReadOnly|QIODevice::Text);
     if(file.isOpen()){
         //打开成功则进行遍历查询
         if(file.size()==0)
@@ -95,16 +100,20 @@ int table::tbl_exists(QString usrname,QString dbname,QString tblname){
             return 0;       //文件为空，表不存在，可以创建
         }else{
             QTextStream out(&file);
-            QString data;
-             while(!out.atEnd()){
-                 data= out.readLine();
-                 QStringList tblData=data.split("#");
-                 if(tblName==tblData.at(0)){
-                     //该表已存在
-                     file.close();
-                     return -1;
-                 }
-             }
+            QString strAll;
+            QStringList strList;
+
+            strAll = out.readAll();
+            strList = strAll.split("\n");
+            for(int i = 0;i<strList.count();i++){
+                QString tblname = strList.at(i);
+                if(tblname == tblName){
+                    //表名已存在
+                    file.close();
+                    return -1;
+                }
+            }
+
              file.close();
              return 1;//该表不存在
         }
