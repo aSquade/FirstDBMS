@@ -218,11 +218,12 @@ void table::table_out(QString usrname,QString dbname,QString tblname){
          systrd.remove();
          QFile outputfile(fileName);
          //QFile systbl2(FileName+"/data/"+userName+"/"+dbName+"/"+tblName+"/"+tblName+".tdf");
-         if(outputfile.open(QIODevice::WriteOnly | QIODevice::Text)){
+         if(outputfile.open(QIODevice::WriteOnly | QIODevice::Text))
+         {
                  QTextStream edit(&outputfile);
                  for(int i=0;i<lines.size();i++){
                  edit<<lines[i]<<endl;
-        }
+         }
                  outputfile.close();
     }
          /*if(systbl2.open(QIODevice::WriteOnly | QIODevice::Text)){

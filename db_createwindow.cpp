@@ -41,8 +41,10 @@ void DB_CreateWindow::on_confirmButton_clicked()
     //长度符合之后,创建数据库对象，传入用户名和库名
     Database db(username,s);
     int chexists = db.check_dbexists(username,s);//检查库是否已存在
-    if(chexists==-1){
+    if(chexists==-1||chexists==-2){
         QMessageBox::information(this,"警告","此数据库已存在！",QMessageBox::Ok);
+    }else if(chexists == 3){
+        QMessageBox::information(this,"警告","文件打开失败！",QMessageBox::Ok);
     }else{
         //进行写入database.txt的操作
         int chdone = db.db_write(username,s);

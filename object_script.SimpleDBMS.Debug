@@ -3,6 +3,8 @@ debug/columnalterwindow.o
 debug/columndeletewindow.o
 debug/createwindow.o
 debug/database.o
+debug/datadeletewindow.o
+debug/datainsertwindow.o
 debug/db_createwindow.o
 debug/db_deletewindow.o
 debug/deletewindow.o
@@ -10,14 +12,18 @@ debug/main.o
 debug/login.o
 debug/mainwindow.o
 debug/register.o
+debug/row.o
 debug/table.o
 debug/tbl_createwindow.o
 debug/tbl_deletewindow.o
 debug/user.o
+debug/column.o
 debug/moc_columnaddwindow.o
 debug/moc_columnalterwindow.o
 debug/moc_columndeletewindow.o
 debug/moc_createwindow.o
+debug/moc_datadeletewindow.o
+debug/moc_datainsertwindow.o
 debug/moc_db_createwindow.o
 debug/moc_db_deletewindow.o
 debug/moc_deletewindow.o

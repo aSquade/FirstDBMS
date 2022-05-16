@@ -3,6 +3,8 @@ release/columnalterwindow.o
 release/columndeletewindow.o
 release/createwindow.o
 release/database.o
+release/datadeletewindow.o
+release/datainsertwindow.o
 release/db_createwindow.o
 release/db_deletewindow.o
 release/deletewindow.o
@@ -10,14 +12,18 @@ release/main.o
 release/login.o
 release/mainwindow.o
 release/register.o
+release/row.o
 release/table.o
 release/tbl_createwindow.o
 release/tbl_deletewindow.o
 release/user.o
+release/column.o
 release/moc_columnaddwindow.o
 release/moc_columnalterwindow.o
 release/moc_columndeletewindow.o
 release/moc_createwindow.o
+release/moc_datadeletewindow.o
+release/moc_datainsertwindow.o
 release/moc_db_createwindow.o
 release/moc_db_deletewindow.o
 release/moc_deletewindow.o

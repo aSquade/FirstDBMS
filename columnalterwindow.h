@@ -12,7 +12,7 @@ class ColumnAlterWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit ColumnAlterWindow(QWidget *parent = nullptr);
+    explicit ColumnAlterWindow(QString usrname,QWidget *parent = nullptr);
     ~ColumnAlterWindow();
 
 private slots:
@@ -24,6 +24,7 @@ private slots:
 
 private:
     Ui::ColumnAlterWindow *ui;
+    QString username;
 };
 
 #endif // COLUMNALTERWINDOW_H

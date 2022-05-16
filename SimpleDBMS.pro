@@ -21,6 +21,8 @@ SOURCES += \
     columndeletewindow.cpp \
     createwindow.cpp \
     database.cpp \
+    datadeletewindow.cpp \
+    datainsertwindow.cpp \
     db_createwindow.cpp \
     db_deletewindow.cpp \
     deletewindow.cpp \
@@ -28,6 +30,8 @@ SOURCES += \
     login.cpp \
     mainwindow.cpp \
     register.cpp \
+    row.cpp \
+    split.cpp \
     table.cpp \
     tbl_createwindow.cpp \
     tbl_deletewindow.cpp \
@@ -40,12 +44,16 @@ HEADERS += \
     columndeletewindow.h \
     createwindow.h \
     database.h \
+    datadeletewindow.h \
+    datainsertwindow.h \
     db_createwindow.h \
     db_deletewindow.h \
     deletewindow.h \
     login.h \
     mainwindow.h \
     register.h \
+    row.h \
+    split.h \
     table.h \
     tbl_createwindow.h \
     tbl_deletewindow.h \
@@ -57,6 +65,8 @@ FORMS += \
     columnalterwindow.ui \
     columndeletewindow.ui \
     createwindow.ui \
+    datadeletewindow.ui \
+    datainsertwindow.ui \
     db_createwindow.ui \
     db_deletewindow.ui \
     deletewindow.ui \

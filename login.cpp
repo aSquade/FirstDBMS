@@ -39,7 +39,6 @@ void Login::on_loginButton_clicked()
     if(usrname==""||passwd==""){
         QMessageBox::information(this,"警告","输入不能为空",QMessageBox::Ok);
     }else{
-
          int logCheck = usr.user_read(usr);
          if(logCheck==0){
              //QMessageBox::information(this,"提示","登录成功！",QMessageBox::Ok);

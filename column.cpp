@@ -15,6 +15,7 @@
 #include <string.h>
 #include <io.h>
 #include <QCoreApplication>
+#include <QDebug>
 column::column(QString usrname,QString dbname,QString tblname,QString colname)
 {
     databasename = dbname;
@@ -280,4 +281,71 @@ void column::col_out(QString usrname,QString dbname,QString tblname,QString coln
 
     }
 }
+
+int column::col_namechange(QString usrname,QString dbname,QString tblname,QString colname1,QString colname2){
+
+    QString usrName = usrname;
+    QString dbName = dbname;
+    QString tblName = tblname;
+
+
+    QString FileName = QCoreApplication::applicationDirPath();
+    QString pathName = FileName+"/data/"+usrName+'/'+dbName+'/'+tblName;
+    QString fileName= pathName+"/"+tblName+".tdf";//存储字段相关信息
+    int flag=0;
+    QFile file(fileName);
+    file.open(QIODevice::ReadWrite|QIODevice::Text);
+    if(file.isOpen()){
+        //file.flush();
+        //qDebug() << "f.size() before opening =" << file.size();
+        //file.seek(0);
+        if(file.size()==0){
+            file.close();
+            return 0;
+        }
+        else{
+            QStringList lines;
+            QTextStream out(&file);
+            QString data;
+            while(!out.atEnd()){
+                data=out.readLine();
+                QStringList coldata=data.split("#");
+                if(colname1!=coldata.at(0)&&colname2!=coldata.at(0)){
+                    //把不需要修改的列信息复制到链里
+                    lines.push_back(data);
+                }
+                if(colname2==coldata.at(0)){
+                    //新列名已存在
+                    file.close();
+                    return -1;
+                }
+                if(colname1==coldata.at(0)){
+                    //找到了需要修改的列
+                    flag=1;
+                    QString str=colname2+"#"+coldata.at(1);//修改此列信息
+                    lines.push_back(str);
+
+                }
+            }
+            file.remove();
+            if(flag==0){
+                file.close();
+                return -2;
+            }else{
+                file.close();
+                QFile file2(fileName);
+                if(file2.open(QIODevice::WriteOnly | QIODevice::Text)){
+                    QTextStream edit(&file2);
+                    for(int i=0;i<lines.size();i++){
+                    edit<<lines[i]<<endl;
+                }
+                file2.close();
+                return 1;
+            }
+        }
+
+        }
+    }
+}
+
 

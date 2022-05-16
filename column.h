@@ -29,6 +29,7 @@ public:
     int col_exists(QString usrname,QString dbname, QString tblname,QString colname);
     int col_in(QString usrname,QString dbname,QString tblname,QString colname,QString coltype,QString check_name,QString check);
     void col_out(QString usrname,QString dbname,QString tblname,QString colname);
+    int col_namechange(QString usrname,QString dbname,QString tblname,QString colname1,QString colname2);
 };
 
 #endif // COLUMN_H
