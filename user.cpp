@@ -12,19 +12,27 @@
 #include <QDebug>
 #include <QFileInfo>
 using namespace std;
-User::User(QString usrname, QString passwd){
+User::User(QString usrname, QString passwd,QString pow)
+{
     username=usrname;
     password=passwd;
+    power = pow;
 }
-User::~User(){
+User::~User()
+{
 
 }
-QString User::toUpperAndLower(QString src){
-    for(int i = 0; i < src.count(); i++) {
+QString User::toUpperAndLower(QString src)
+{
+    for(int i = 0; i < src.count(); i++)
+    {
             QChar curC = src.at(i);
-            if(curC.isUpper()) {
+            if(curC.isUpper())
+            {
                 curC = curC.toLower();
-            } else if(curC.isLower()){
+            }
+            else if(curC.isLower())
+            {
                 curC = curC.toUpper();
             }
             src[i] = curC;
@@ -38,10 +46,13 @@ int User::check_exist(QString usr){
     QFile file(fileName+"/data/user.txt");
     file.open(QIODevice::ReadWrite|QIODevice::Text);
     if(file.isOpen()){
-        if(file.size()==0){
+        if(file.size()==0)
+        {
             file.close();
             return 0;
-        }else{
+        }
+        else
+        {
             QString data;
             QStringList userData;//保存读取到的用户名和密码
             QTextStream out(&file);
@@ -61,7 +72,8 @@ int User::check_exist(QString usr){
 }
 
 //用户信息写入文件
-int User::user_write(User *newUser){
+int User::user_write(User *newUser)
+{
         QString fileName = QCoreApplication::applicationDirPath();
         QFile file(fileName+"/data/user.txt");
         QDir dir;
@@ -72,15 +84,28 @@ int User::user_write(User *newUser){
         QByteArray by = text.toBase64();
         QString str = toUpperAndLower(QString(by));
         newUser->password = str;
-        if(file.isOpen()){
+
+        if(newUser->username=="admin")
+        {
+            newUser->power = "admin power";
+        }
+        else
+        {
+            newUser->power = "no power";
+        }
+        if(file.isOpen())
+        {
             QTextStream in(&file);
-            in<<newUser->username<<":"<<newUser->password<<endl;
+            in<<newUser->username<<":"<<newUser->password<<":"<<newUser->power<<endl;
             userList.push_back(newUser);
             file.close();
             return 0;
-        }else{
+        }
+        else
+        {
             return -1;
         }
+
 }
 //用户信息读取登录
 int User::user_read(User usr){
@@ -95,7 +120,7 @@ int User::user_read(User usr){
             while(!out.atEnd()){//一行行读直到末尾
                 data=out.readLine();
                 userData=data.split(":");//以冒号为分隔符存到userData里
-                User *newUser=new User(userData.at(0),userData.at(1));
+                User *newUser=new User(userData.at(0),userData.at(1),userData.at(2));
                 //进行解密
                 QString pw = userData.at(1);
                 QString str = toUpperAndLower(pw);

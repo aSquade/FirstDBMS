@@ -50,7 +50,7 @@ int table::coltype_check(QString coltype){
 QString table::get_path(QString usrname,QString dbname){
     QString FileName = QCoreApplication::applicationDirPath();
     QString pathName = FileName+"/data/"+usrname+"/"+dbname;//用户文件夹位置
-    QString fileName = pathName+"/"+"table.txt";
+    QString fileName = pathName+"/";
     return fileName;
 }
 int table::db_exists(QString usrname,QString dbname){
@@ -148,7 +148,7 @@ int table::table_in(QString usrname,QString dbname,QString tblname,QString colna
          QFileInfo info(fileName);
          QString tblInfo1 = tblName;//#作为分隔符
          QString tblInfo2 = colName+"#"+colType;
-         QString tblInfo3 = cheName+"#"+che;
+         QString tblInfo3 = colName+"#"+cheName+"#"+che;
          QTextStream out1(&file);//写入
          QTextStream out2(&systdf);
          QTextStream out3(&systic);

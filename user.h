@@ -7,16 +7,18 @@
 #include <QTextStream>
 #include <QStringList>
 using namespace std;
-class User{
+class User
+{
 public:
     friend class Register;
     friend class Login;
     //构造时传入用户名和密码
-    User(QString usrname, QString passwd);
+    User(QString usrname, QString passwd,QString pow);
     ~User();
 private:
     QString username;
     QString password;
+    QString power;
 public:
     QList<User *> userList;//定义一条链表存放所有用户
     int check_exist(QString usr);//检验用户名是否已存在

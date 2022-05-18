@@ -25,8 +25,11 @@ bool variablecheck(QString str){
     //各种名称的要求：数据库名、表名、列名要求智能大小写字母，3到15个字符组成
     QRegExp  name("^[a-zA-Z_]{3,15}$");
     //QRegExpValidator nameVli(name, 0);  //用于执行匹配操作
-    if(name.exactMatch(str)){
+    if(name.exactMatch(str) && str != "create" && str != "drop" && str != "delete" && str != "alter"
+             && str != "update" && str != "select" && str != "open" && str != "close" && str != "table"
+             && str != "database" && str != "index"){
         return true;
+
     }else{
         return false;
     }
@@ -181,7 +184,7 @@ int rename_table(QString usrname, QString tbnewname, QString tbpastname, QString
         int ck_tblexists = tbl.tbl_exists(user,dbn,old);
         if(ck_tblexists == -1){
             //表存在，可以进行修改
-            QString filename = tbl.get_path(user,dbn);
+            QString filename = tbl.get_path(user,dbn)+"table.txt";
             QString strAll;
             QStringList strList;
             QFile readFile(filename);
@@ -199,6 +202,8 @@ int rename_table(QString usrname, QString tbnewname, QString tbpastname, QString
                 }
             }
             readFile.close();
+
+
             QFile writeFile(filename);      //写新信息
             if(writeFile.open(QIODevice::WriteOnly|QIODevice::Text)){
                 QTextStream stream(&writeFile);
@@ -229,7 +234,26 @@ int rename_table(QString usrname, QString tbnewname, QString tbpastname, QString
             QString newPath = QCoreApplication::applicationDirPath()+"/data/"+user+"/"+dbn+'/'+nw;
             QDir dir(pastPath);
             dir.rename(pastPath,newPath);
-            return -1;
+            //重命名文件夹里的文件
+            QString old_tbltdf = newPath+'/'+old+".tdf";
+            QString new_tbltdf = newPath+'/'+nw+".tdf";
+            QString old_tbltic = newPath+'/'+old+".tic";
+            QString new_tbltic = newPath+'/'+nw+".tic";
+            QString old_tbltid = newPath+'/'+old+".tid";
+            QString new_tbltid = newPath+'/'+nw+".tid";
+            QString old_tbltrd = newPath+'/'+old+".trd";
+            QString new_tbltrd = newPath+'/'+nw+".trd";
+
+            bool ok1 = QFile::rename(old_tbltdf,new_tbltdf);
+            bool ok2 = QFile::rename(old_tbltic,new_tbltic);
+            bool ok3 = QFile::rename(old_tbltid,new_tbltid);
+            bool ok4 = QFile::rename(old_tbltrd,new_tbltrd);
+            if(ok1&&ok2&&ok3&&ok4){
+                return -1;
+            }else{
+                //表内文件更改失败
+                return 6;
+            }
 
         }else{
             //表不存在

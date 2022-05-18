@@ -31,7 +31,8 @@ Register::Register(QWidget *parent)
 Register::~Register(){
     delete reui;
 }
-void Register::clear_edit(){
+void Register::clear_edit()
+{
     reui->usernameEdit->setText("");
     reui->passwordEdit->setText("");
     reui->confirmpasswordEdit->setText("");
@@ -40,34 +41,38 @@ void Register::clear_edit(){
 }
 
 //检查用户名和密码输入是否规范
-int Register::check_input(QString s1,QString s2,QString s3){
-    if((s1=="")||(s2=="")||(s3=="")){
+int Register::check_input(QString s1,QString s2,QString s3)
+{
+    if((s1=="")||(s2=="")||(s3==""))
+    {
         msgBox.information(this,"警告","输入不能为空",QMessageBox::Ok);
         return -1;
-    }else if(s2 != s3){
+    }
+    else if(s2 != s3)
+    {
         msgBox.information(this,"警告","两次密码不一致",QMessageBox::Ok);
         reui->passwordEdit->setText("");
         reui->confirmpasswordEdit->setText("");
         reui->passwordEdit->setEnabled(true);
         reui->passwordEdit->setFocus();
         return -1;
-    }else{
-        if(s1==s2){
-            msgBox.information(this,"提示","用户名和密码不能重复！",QMessageBox::Ok);
-            clear_edit();
-            return -1;
-        }
+    }
+    else
+    {
         //三次输入均满足条件，则开始写入文件
-        else if(usrRx.exactMatch(s1)&&pwdRx.exactMatch(s2)){
+        if(usrRx.exactMatch(s1)&&pwdRx.exactMatch(s2))
+        {
             qDebug()<<"格式正确";
             return 1;
-            //this->hide();
+
         }
-        else{
+        else
+        {
             msgBox.information(this,"提示","格式输入有误！\n"
                            "\n用户名和密码为字母开头仅包含字母数字和下划线的组合\n"
                            "\n密码6~12位，用户名4~8位",QMessageBox::Ok);
             clear_edit();
+            return -1;
         }
     }
 }
@@ -83,25 +88,43 @@ void Register::on_confirmButton_clicked()
     QString usrname = reui->usernameEdit->text();
     QString passwd = reui->passwordEdit->text();
     QString confmpw = reui->confirmpasswordEdit->text();
-    //检查用户名和密码格式
-    //int ckinput=Register::check_input(usrname,passwd,confmpw);
+    QString pow ;
+    if(usrname!="admin")//普通用户
+    {
+
+        pow = "no power";
+
+    }
+    else//系统用户
+    {
+
+        pow = "admin power";
+
+    }
     int ckinput = 1;
-    if(ckinput==1){
+    if(ckinput==1)
+    {
         //检查是否重名
-        User usr(usrname,passwd);
+        User usr(usrname,passwd,pow);
         int chexist = usr.check_exist(usrname);
-        if(chexist<0){
+        if(chexist<0)
+        {
             msgBox.information(this,"提示","该用户名已存在！",QMessageBox::Ok);
             clear_edit();
-        }else{
-            //将注册信息写入文件
+        }else
+        {
+
             int chdone = usr.user_write(&usr);
-            if(chdone<0){
+            if(chdone<0)
+            {
                 msgBox.information(this,"错误","文件无法打开!",QMessageBox::Ok);
-            }else{
+            }
+            else
+            {
                 msgBox.information(this,"提示","格式正确，注册成功！",QMessageBox::Ok);
                 this->hide();
             }
+
         }
     }
 }

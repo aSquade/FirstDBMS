@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QString usrname,QWidget *parent = nullptr);
+    explicit MainWindow(QString usrname,QString pow,QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -40,6 +40,7 @@ private:
     Ui::MainWindow *ui;
 public:
      QString username;
+     QString power;
 };
 
 #endif // MAINWINDOW_H
