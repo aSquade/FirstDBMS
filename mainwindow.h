@@ -36,11 +36,14 @@ private slots:
 
     void on_comfirmButton_clicked();
 
+    void on_refreshButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 public:
      QString username;
      QString power;
+     void display();
 };
 
 #endif // MAINWINDOW_H

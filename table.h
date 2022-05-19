@@ -29,6 +29,7 @@ public:
     int table_in(QString usrname,QString dbname,QString tblname,QString colname,QString coltype,QString check_name,QString check);
     void table_out(QString usrname,QString dbname,QString tblname);
     QString get_path(QString usrname,QString dbname);
+    int rename_tbl(QString usrname, QString tbnewname, QString tbpastname, QString dbname);
 };
 
 #endif // TABLE_H

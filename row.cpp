@@ -44,7 +44,7 @@ int row::db_exists(QString usrname,QString dbname)
              while(!out.atEnd()){
                  data= out.readLine();
                  QStringList dbData=data.split("#");
-                 if(dbName==dbData.at(0)){
+                 if(dbName==dbData.at(0).toLower()){
                      //该数据库已存在
                      file.close();
                      return -1;

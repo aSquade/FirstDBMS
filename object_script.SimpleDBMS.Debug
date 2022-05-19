@@ -1,3 +1,4 @@
+debug/Sheet.o
 debug/columnaddwindow.o
 debug/columnalterwindow.o
 debug/columndeletewindow.o
@@ -8,6 +9,8 @@ debug/datainsertwindow.o
 debug/db_createwindow.o
 debug/db_deletewindow.o
 debug/deletewindow.o
+debug/display.o
+debug/field.o
 debug/main.o
 debug/login.o
 debug/mainwindow.o
@@ -18,6 +21,7 @@ debug/tbl_createwindow.o
 debug/tbl_deletewindow.o
 debug/user.o
 debug/column.o
+debug/qrc_pic.o
 debug/moc_columnaddwindow.o
 debug/moc_columnalterwindow.o
 debug/moc_columndeletewindow.o

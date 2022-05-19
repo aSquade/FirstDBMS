@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>pic/add.png</file>
+        <file>pic/addCol.png</file>
+        <file>pic/alter.png</file>
+        <file>pic/alterCol.png</file>
+        <file>pic/background.png</file>
+        <file>pic/clear.png</file>
+        <file>pic/clear1.png</file>
+        <file>pic/comfirm.png</file>
+        <file>pic/comfirm1.png</file>
+        <file>pic/create.png</file>
+        <file>pic/create1.png</file>
+        <file>pic/delCol.png</file>
+        <file>pic/delData.png</file>
+        <file>pic/delete.png</file>
+        <file>pic/delete1.png</file>
+        <file>pic/insert.png</file>
+        <file>pic/insert1.png</file>
+        <file>pic/login.png</file>
+        <file>pic/login1.png</file>
+        <file>pic/signup.png</file>
+        <file>pic/signup1.png</file>
+    </qresource>
+</RCC>

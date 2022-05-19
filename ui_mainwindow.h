@@ -12,14 +12,14 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QScrollBar>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
@@ -29,9 +29,6 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QScrollArea *scrollArea;
-    QWidget *scrollAreaWidgetContents;
-    QScrollBar *verticalScrollBar;
     QPushButton *createButton;
     QPushButton *deleteButton;
     QPushButton *addColumnButton;
@@ -44,7 +41,9 @@ public:
     QPushButton *deleteDataButton;
     QPushButton *comfirmButton;
     QPushButton *clearButton;
-    QTextEdit *textOutput;
+    QTextEdit *fileDisplay;
+    QPushButton *refreshButton;
+    QTableWidget *tableWidget;
     QMenuBar *menubar;
     QMenu *menuMainWindow;
     QStatusBar *statusbar;
@@ -53,64 +52,58 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1083, 869);
+        MainWindow->resize(793, 702);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        scrollArea = new QScrollArea(centralwidget);
-        scrollArea->setObjectName(QString::fromUtf8("scrollArea"));
-        scrollArea->setGeometry(QRect(20, 20, 261, 531));
-        scrollArea->setWidgetResizable(true);
-        scrollAreaWidgetContents = new QWidget();
-        scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 259, 529));
-        verticalScrollBar = new QScrollBar(scrollAreaWidgetContents);
-        verticalScrollBar->setObjectName(QString::fromUtf8("verticalScrollBar"));
-        verticalScrollBar->setGeometry(QRect(230, 0, 16, 551));
-        verticalScrollBar->setOrientation(Qt::Vertical);
-        scrollArea->setWidget(scrollAreaWidgetContents);
         createButton = new QPushButton(centralwidget);
         createButton->setObjectName(QString::fromUtf8("createButton"));
-        createButton->setGeometry(QRect(340, 50, 111, 41));
+        createButton->setGeometry(QRect(230, 30, 111, 41));
         deleteButton = new QPushButton(centralwidget);
         deleteButton->setObjectName(QString::fromUtf8("deleteButton"));
-        deleteButton->setGeometry(QRect(480, 50, 111, 41));
+        deleteButton->setGeometry(QRect(230, 90, 111, 41));
         addColumnButton = new QPushButton(centralwidget);
         addColumnButton->setObjectName(QString::fromUtf8("addColumnButton"));
-        addColumnButton->setGeometry(QRect(340, 150, 111, 41));
+        addColumnButton->setGeometry(QRect(380, 30, 111, 41));
         textInput = new QTextEdit(centralwidget);
         textInput->setObjectName(QString::fromUtf8("textInput"));
-        textInput->setGeometry(QRect(300, 270, 761, 231));
+        textInput->setGeometry(QRect(220, 150, 551, 231));
         label = new QLabel(centralwidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(340, 120, 61, 16));
+        label->setGeometry(QRect(380, 0, 61, 16));
         alterColumnBotton = new QPushButton(centralwidget);
         alterColumnBotton->setObjectName(QString::fromUtf8("alterColumnBotton"));
-        alterColumnBotton->setGeometry(QRect(490, 150, 111, 41));
+        alterColumnBotton->setGeometry(QRect(520, 30, 111, 41));
         deleteColumnButton = new QPushButton(centralwidget);
         deleteColumnButton->setObjectName(QString::fromUtf8("deleteColumnButton"));
-        deleteColumnButton->setGeometry(QRect(640, 150, 111, 41));
+        deleteColumnButton->setGeometry(QRect(660, 30, 111, 41));
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(340, 20, 81, 16));
+        label_2->setGeometry(QRect(230, 0, 81, 16));
         insertDataButton = new QPushButton(centralwidget);
         insertDataButton->setObjectName(QString::fromUtf8("insertDataButton"));
-        insertDataButton->setGeometry(QRect(340, 210, 111, 41));
+        insertDataButton->setGeometry(QRect(380, 90, 111, 41));
         deleteDataButton = new QPushButton(centralwidget);
         deleteDataButton->setObjectName(QString::fromUtf8("deleteDataButton"));
-        deleteDataButton->setGeometry(QRect(490, 210, 111, 41));
+        deleteDataButton->setGeometry(QRect(520, 90, 111, 41));
         comfirmButton = new QPushButton(centralwidget);
         comfirmButton->setObjectName(QString::fromUtf8("comfirmButton"));
-        comfirmButton->setGeometry(QRect(950, 510, 111, 41));
+        comfirmButton->setGeometry(QRect(660, 400, 111, 41));
         clearButton = new QPushButton(centralwidget);
         clearButton->setObjectName(QString::fromUtf8("clearButton"));
-        clearButton->setGeometry(QRect(810, 510, 111, 41));
-        textOutput = new QTextEdit(centralwidget);
-        textOutput->setObjectName(QString::fromUtf8("textOutput"));
-        textOutput->setGeometry(QRect(20, 560, 1041, 261));
+        clearButton->setGeometry(QRect(520, 400, 111, 41));
+        fileDisplay = new QTextEdit(centralwidget);
+        fileDisplay->setObjectName(QString::fromUtf8("fileDisplay"));
+        fileDisplay->setGeometry(QRect(20, 0, 181, 441));
+        refreshButton = new QPushButton(centralwidget);
+        refreshButton->setObjectName(QString::fromUtf8("refreshButton"));
+        refreshButton->setGeometry(QRect(100, 410, 101, 31));
+        tableWidget = new QTableWidget(centralwidget);
+        tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
+        tableWidget->setGeometry(QRect(20, 460, 751, 192));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1083, 22));
+        menubar->setGeometry(QRect(0, 0, 793, 22));
         menuMainWindow = new QMenu(menubar);
         menuMainWindow->setObjectName(QString::fromUtf8("menuMainWindow"));
         MainWindow->setMenuBar(menubar);
@@ -128,17 +121,18 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        createButton->setText(QCoreApplication::translate("MainWindow", "\345\210\233\345\273\272", nullptr));
-        deleteButton->setText(QCoreApplication::translate("MainWindow", "\345\210\240\351\231\244", nullptr));
-        addColumnButton->setText(QCoreApplication::translate("MainWindow", "\346\267\273\345\212\240\350\241\250\345\255\227\346\256\265", nullptr));
+        createButton->setText(QString());
+        deleteButton->setText(QString());
+        addColumnButton->setText(QString());
         label->setText(QCoreApplication::translate("MainWindow", "\350\241\250\346\223\215\344\275\234\357\274\232", nullptr));
-        alterColumnBotton->setText(QCoreApplication::translate("MainWindow", "\344\277\256\346\224\271\350\241\250\345\255\227\346\256\265", nullptr));
-        deleteColumnButton->setText(QCoreApplication::translate("MainWindow", "\345\210\240\351\231\244\350\241\250\345\255\227\346\256\265", nullptr));
+        alterColumnBotton->setText(QString());
+        deleteColumnButton->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "\345\272\223/\350\241\250\357\274\232", nullptr));
-        insertDataButton->setText(QCoreApplication::translate("MainWindow", "\346\217\222\345\205\245\346\225\260\346\215\256", nullptr));
-        deleteDataButton->setText(QCoreApplication::translate("MainWindow", "\345\210\240\351\231\244\346\225\260\346\215\256", nullptr));
-        comfirmButton->setText(QCoreApplication::translate("MainWindow", "\347\241\256\345\256\232", nullptr));
-        clearButton->setText(QCoreApplication::translate("MainWindow", "\346\270\205\347\251\272", nullptr));
+        insertDataButton->setText(QString());
+        deleteDataButton->setText(QString());
+        comfirmButton->setText(QString());
+        clearButton->setText(QString());
+        refreshButton->setText(QCoreApplication::translate("MainWindow", "\345\210\267\346\226\260", nullptr));
         menuMainWindow->setTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
     } // retranslateUi
 

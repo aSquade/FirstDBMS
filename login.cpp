@@ -13,6 +13,19 @@ Login::Login(QWidget *parent)
     , loui(new Ui::Login)
 {
     loui->setupUi(this);
+
+    QPalette pal = this->palette();
+    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/pic/background.png")));
+    setPalette(pal);
+
+    loui->loginButton->setStyleSheet("QPushButton{image: url(:/pic/login1.png);}"
+                                     "QPushButton:hover{image: url(:/pic/login.png);}");
+    loui->loginButton->setFlat(true);
+
+    loui->registerButton->setStyleSheet("QPushButton{image: url(:/pic/signup1.png);}"
+                                     "QPushButton:hover{image: url(:/pic/signup.png);}");
+    loui->registerButton->setFlat(true);
+
     loui->passwordEdit->setEchoMode(QLineEdit::Password);//设置密码不可见
     connect(loui->loginButton,SIGNAL(on_LoginButton_clicked()),SLOT(user_read()));
 }

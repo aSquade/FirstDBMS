@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Sheet.cpp \
     columnaddwindow.cpp \
     columnalterwindow.cpp \
     columndeletewindow.cpp \
@@ -26,6 +27,8 @@ SOURCES += \
     db_createwindow.cpp \
     db_deletewindow.cpp \
     deletewindow.cpp \
+    display.cpp \
+    field.cpp \
     main.cpp \
     login.cpp \
     mainwindow.cpp \
@@ -49,10 +52,13 @@ HEADERS += \
     db_createwindow.h \
     db_deletewindow.h \
     deletewindow.h \
+    display.h \
+    field.h \
     login.h \
     mainwindow.h \
     register.h \
     row.h \
+    sheet.h \
     split.h \
     table.h \
     tbl_createwindow.h \
@@ -80,3 +86,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    pic.qrc

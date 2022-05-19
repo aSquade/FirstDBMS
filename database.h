@@ -16,6 +16,7 @@ public:
 protected:
     QString databasename;
     QString username;
+
 public:
     void db_out(QString usrname,QString dbname);//数据库删除
     int db_read(QString usrname,QString dbname);      //读取数据库信息
@@ -24,6 +25,10 @@ public:
     bool del_directory(const QString &path);//删除文件夹
     int check_dbopen(QString usrname,QString dbname);   //检查数据库是否已打开
     QString get_dbpath(QString usrname,QString dbname); //获得数据库路径
+    int open_database(QString dbname,QString usrname);//打开数据库
+    int close_database(QString dbname,QString usrname);//关闭数据库
+    int rename_database(QString usrname, QString dbnewname, QString dbpastname);//重命名数据库
+    bool variablecheck(QString str);//检查输入是否规范
 };
 
 #endif // DATABASE_H

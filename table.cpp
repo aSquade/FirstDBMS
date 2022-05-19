@@ -1,5 +1,6 @@
 #include "table.h"
 #include "user.h"
+#include "database.h"
 #include <QString>
 #include <QTextStream>
 #include <QStringList>
@@ -82,6 +83,108 @@ int table::db_exists(QString usrname,QString dbname){
         }
     }
     return -2;
+}
+int table::rename_tbl(QString usrname, QString tbnewname, QString tbpastname, QString dbname){
+    QString nw = tbnewname;
+    QString old = tbpastname;
+    QString user = usrname;
+    QString dbn = dbname;
+    Database db(user,dbn);
+    bool isOK = db.variablecheck(nw);
+    if(!isOK){
+        //新表名不满足条件
+        return 5;
+    }
+    //先检查库是否存在并已打开
+    int ck_exists = db.check_dbexists(usrname,dbname);
+    if(ck_exists==-1){
+        //检查表是否存在
+        table tbl(user, dbn, old);
+        int ck_tblexists = tbl.tbl_exists(user,dbn,old);
+        if(ck_tblexists == -1){
+            //表存在，可以进行修改
+            QString filename = tbl.get_path(user,dbn)+"table.txt";
+            QString strAll;
+            QStringList strList;
+            QFile readFile(filename);
+            if(readFile.open((QIODevice::ReadOnly|QIODevice::Text))){
+                QTextStream stream(&readFile);
+                strAll = stream.readAll();
+                strList = strAll.split("\n");
+                for(int i = 0;i<strList.count();i++){
+                    QString tblname = strList.at(i);
+                    if(tblname == nw){
+                        //新表名已存在
+                        readFile.close();
+                        return 3;
+                    }
+                }
+            }
+            readFile.close();
+
+
+            QFile writeFile(filename);      //写新信息
+            if(writeFile.open(QIODevice::WriteOnly|QIODevice::Text)){
+                QTextStream stream(&writeFile);
+                strList = strAll.split("\n");
+                for(int i = 0; i<strList.count();i++){
+                    QString tblname = strList.at(i);
+                    if(tblname==old){
+                        //进行替换
+                        tblname = nw;
+                        if(i != (strList.count() -1))
+                            stream<<tblname<<endl;
+                        else
+                            stream<<tblname;
+                    }else{
+                        //若不是要操作的库
+                        if(i == (strList.count() -1)){
+                            //若是到了最后一行
+                            stream<<strList.at(i);
+                        }else{
+                            stream<<strList.at(i)<<endl;
+                        }
+                    }
+                }
+            }
+            writeFile.close();
+            //重命名文件夹
+            QString pastPath = QCoreApplication::applicationDirPath()+"/data/"+user+"/"+dbn+'/'+old;
+            QString newPath = QCoreApplication::applicationDirPath()+"/data/"+user+"/"+dbn+'/'+nw;
+            QDir dir(pastPath);
+            dir.rename(pastPath,newPath);
+            //重命名文件夹里的文件
+            QString old_tbltdf = newPath+'/'+old+".tdf";
+            QString new_tbltdf = newPath+'/'+nw+".tdf";
+            QString old_tbltic = newPath+'/'+old+".tic";
+            QString new_tbltic = newPath+'/'+nw+".tic";
+            QString old_tbltid = newPath+'/'+old+".tid";
+            QString new_tbltid = newPath+'/'+nw+".tid";
+            QString old_tbltrd = newPath+'/'+old+".trd";
+            QString new_tbltrd = newPath+'/'+nw+".trd";
+
+            bool ok1 = QFile::rename(old_tbltdf,new_tbltdf);
+            bool ok2 = QFile::rename(old_tbltic,new_tbltic);
+            bool ok3 = QFile::rename(old_tbltid,new_tbltid);
+            bool ok4 = QFile::rename(old_tbltrd,new_tbltrd);
+            if(ok1&&ok2&&ok3&&ok4){
+                return -1;
+            }else{
+                //表内文件更改失败
+                return 6;
+            }
+
+        }else{
+            //表不存在
+            return 4;
+        }
+    }else if(ck_exists==-2){
+        //库已存在，但未打开
+        return 1;
+    }else{
+        //库不存在或文件打开失败
+        return 2;
+    }
 }
 
 int table::tbl_exists(QString usrname,QString dbname,QString tblname){

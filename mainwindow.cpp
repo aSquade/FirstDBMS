@@ -11,6 +11,7 @@
 #include "string"
 #include "split.h"
 #include "split.cpp"
+#include "sheet.h"
 #include <QString>
 #include <QDebug>
 #include <QMessageBox>
@@ -19,7 +20,6 @@
 #include <QRegExpValidator>
 #include "database.h"
 #include "row.h"
-
 #include "display.h"
 #include <iostream>
 #include <fstream>
@@ -30,6 +30,46 @@ MainWindow::MainWindow(QString usrname,QString pow,QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    this->setStyleSheet("#MainWindow{border-image:url(:/pic/background.png)}");
+
+    ui->createButton->setStyleSheet("QPushButton{image: url(:/pic/create1.png);}"
+                                    "QPushButton:hover{image: url(:/pic/create.png);}");
+    ui->createButton->setFlat(true);
+
+    ui->deleteButton->setStyleSheet("QPushButton{image: url(:/pic/delete1.png);}"
+                                    "QPushButton:hover{image: url(:/pic/delete.png);}");
+    ui->deleteButton->setFlat(true);
+
+    ui->addColumnButton->setStyleSheet("QPushButton{image: url(:/pic/addCol.png);}"
+                                       "QPushButton:hover{image: url(:/pic/add.png);}");
+    ui->addColumnButton->setFlat(true);
+
+    ui->alterColumnBotton->setStyleSheet("QPushButton{image: url(:/pic/alterCol.png);}"
+                                         "QPushButton:hover{image: url(:/pic/alter.png);}");
+    ui->alterColumnBotton->setFlat(true);
+
+    ui->deleteColumnButton->setStyleSheet("QPushButton{image: url(:/pic/delCol.png);}"
+                                          "QPushButton:hover{image: url(:/pic/delete.png);}");
+    ui->deleteColumnButton->setFlat(true);
+
+    ui->insertDataButton->setStyleSheet("QPushButton{image: url(:/pic/insert1.png);}"
+                                        "QPushButton:hover{image: url(:/pic/insert.png);}");
+    ui->insertDataButton->setFlat(true);
+
+    ui->deleteDataButton->setStyleSheet("QPushButton{image: url(:/pic/delData.png);}"
+                                        "QPushButton:hover{image: url(:/pic/delete.png);}");
+    ui->deleteDataButton->setFlat(true);
+
+    ui->clearButton->setStyleSheet("QPushButton{image: url(:/pic/clear1.png);}"
+                                   "QPushButton:hover{image: url(:/pic/clear.png);}");
+    ui->clearButton->setFlat(true);
+
+    ui->comfirmButton->setStyleSheet("QPushButton{image: url(:/pic/comfirm1.png);}"
+                                     "QPushButton:hover{image: url(:/pic/comfirm.png);}");
+    ui->comfirmButton->setFlat(true);
+    //ui->refreshButton->setFlat(true);
+
     username=usrname;
     power = pow;
     this->display();
@@ -230,6 +270,14 @@ void MainWindow::on_comfirmButton_clicked()
                }
 
 
+
+
+
+
+
+
+
+
             }
             else if (opt11 == 0)//revoke
             {
@@ -377,11 +425,6 @@ void MainWindow::on_comfirmButton_clicked()
                         strExec = strExec.left(strExec.size() - tail_);
                         list1 = strExec.split(" ");
 
-
-                        QString col_name = "";
-                        QString col_type = "";
-                        QString check_name = "";
-                        QString check = "";
                         //日志
                         QString dbName = db_name;
                         QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
@@ -403,6 +446,11 @@ void MainWindow::on_comfirmButton_clicked()
                             //打印信息：文件无法打开
                             file.close();
                         }
+                        QString col_name = "";
+                        QString col_type = "";
+                        QString check_name = "";
+                        QString check = "";
+
                         if (list1.size() < 4){
                             QMessageBox::information(this,"警告","无效关键词！",QMessageBox::Ok);
                         }else{
@@ -522,8 +570,7 @@ void MainWindow::on_comfirmButton_clicked()
                         }
                     }
 
-                }else if (list1[1] == "index")
-                {
+                }else if (list1[1] == "index"){
 
                     int size_ = list1.size();
                     if (list1[size_-2] != "database" || size_<8){
@@ -536,7 +583,6 @@ void MainWindow::on_comfirmButton_clicked()
                         strExec = strExec.left(strExec.size() - tail_);
                         list1 = strExec.split(" ");
 
-                        //日志
 
                         QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
                         QString fileName =  pathName+"/logfile.log";
@@ -621,30 +667,30 @@ void MainWindow::on_comfirmButton_clicked()
                     QString s =  strlist[2];
                     Database db(username,s);
                     int chexists = db.check_dbexists(username,s);//检查库是否已存在
-                    //日志
-                    QString dbName = s;
-                    QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
-                    QString fileName =  pathName+"/logfile.log";
-                    QFile file(fileName);
-                    file.open(QIODevice::Append|QIODevice::Text);
-                    if(file.isOpen())
-                    {
-                         QFileInfo info(fileName);
-                         //QString str = info.birthTime().toString();
-                         QString lastModified = info.lastModified().toString();
-                         QString dbInfo = username+"#"+dbName+"#"+ pathName+"#"+lastModified+"#"+strExec+"#"+"日志";//#作为分隔符
-                         QTextStream out(&file);//写入
-                         out << dbInfo<<endl;
-                         file.close();
-                    }
-                    else
-                    {
-                        //打印信息：文件无法打开
-                        file.close();
-                    }
+
                     if(chexists==-1)
                     {
                         //说明数据库存在，可以删除
+                        QString dbName = s;
+                        QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
+                        QString fileName =  pathName+"/logfile.log";
+                        QFile file(fileName);
+                        file.open(QIODevice::Append|QIODevice::Text);
+                        if(file.isOpen())
+                        {
+                             QFileInfo info(fileName);
+                             //QString str = info.birthTime().toString();
+                             QString lastModified = info.lastModified().toString();
+                             QString dbInfo = username+"#"+dbName+"#"+ pathName+"#"+lastModified+"#"+strExec+"#"+"日志";//#作为分隔符
+                             QTextStream out(&file);//写入
+                             out << dbInfo<<endl;
+                             file.close();
+                        }
+                        else
+                        {
+                            //打印信息：文件无法打开
+                            file.close();
+                        }
                         db.db_out(username,s);
                         QMessageBox::information(this,"提示","删除成功！",QMessageBox::Ok);
                     }
@@ -659,16 +705,9 @@ void MainWindow::on_comfirmButton_clicked()
                     QString s =  strlist[2];//读取用户输入的表名称
                     QString d =  strlist[5];//读取用户打开的的数据库名称
 
-                    QString FileName = QCoreApplication::applicationDirPath();
-                    QString strPath = FileName+"/data/"+username+"/"+d;
-                    QString fileName = strPath+"table.txt";
-
-                    table tbl(username,d,s);
-                    int tbl_exists = tbl.tbl_exists(username,d,s);//检查表是否已存在
-                    //日志
                     QString dbName = d;
                     QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
-                    QString fileName1=  pathName+"/logfile.log";
+                    QString fileName1 =  pathName+"/logfile.log";
                     QFile file(fileName1);
                     file.open(QIODevice::Append|QIODevice::Text);
                     if(file.isOpen())
@@ -686,6 +725,12 @@ void MainWindow::on_comfirmButton_clicked()
                         //打印信息：文件无法打开
                         file.close();
                     }
+                    QString FileName = QCoreApplication::applicationDirPath();
+                    QString strPath = FileName+"/data/"+username+"/"+d;
+                    QString fileName = strPath+"table.txt";
+
+                    table tbl(username,d,s);
+                    int tbl_exists = tbl.tbl_exists(username,d,s);//检查表是否已存在
                     if(tbl_exists==-1)
                     {
                         //说明表存在，可以删除
@@ -701,13 +746,90 @@ void MainWindow::on_comfirmButton_clicked()
 
                 }
                 //drop index 索引名 on 表名 in database 数据库名
-                else if(type == "index"&&strlist[3] =="on"&&strlist[5]=="in"&&strlist[6]=="database" )
-                {
-                    QString s =  strlist[4];//读取用户输入的表名称
-                    QString d =  strlist[7];//读取用户打开的的数据库名称
-                    QString x =  strlist[2];//索引名
-                    //日志
-                    QString dbName = d;
+                              else if(type == "index"&&strlist[3] =="on"&&strlist[5]=="in"&&strlist[6]=="database" )
+                              {
+                                  QString s =  strlist[4];//读取用户输入的表名称
+                                  QString d =  strlist[7];//读取用户打开的的数据库名称
+                                  QString x =  strlist[2];//索引名
+                                  //日志
+                                  QString dbName = d;
+                                  QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
+                                  QString fileName =  pathName+"/logfile.log";
+                                  QFile file(fileName);
+                                  file.open(QIODevice::Append|QIODevice::Text);
+                                  if(file.isOpen())
+                                  {
+                                       QFileInfo info(fileName);
+                                       //QString str = info.birthTime().toString();
+                                       QString lastModified = info.lastModified().toString();
+                                       QString dbInfo = username+"#"+dbName+"#"+ pathName+"#"+lastModified+"#"+strExec+"#"+"日志";//#作为分隔符
+                                       QTextStream out(&file);//写入
+                                       out << dbInfo<<endl;
+                                       file.close();
+                                  }
+                                  else
+                                  {
+                                      //打印信息：文件无法打开
+                                      file.close();
+                                  }
+
+
+                                  QString FileName = QCoreApplication::applicationDirPath();
+                                  QString pathName1 = FileName+"/data/"+username+"/"+dbName+"/"+s;//用户文件夹位置
+                                  QString fileName1= pathName1+"/"+s+".tid";//存储字段相关信息
+                                  QFile inputfile(fileName1);
+                                  QStringList lines;
+
+                                  inputfile.open(QIODevice::ReadWrite|QIODevice::Text);
+                                  if(inputfile.isOpen())
+                                  {
+                                      QTextStream out(&inputfile);
+                                      QString data;
+                                       while(!out.atEnd())
+                                       {
+                                           data = out.readLine();
+                                           QStringList info=data.split("#");
+                                           if(x!=info.at(0))
+                                           {
+                                               //把不是该表的表信息复制到链里
+                                              lines.push_back(data);
+                                           }
+                                      }
+                                       inputfile.remove();
+                                       QFile outputfile(fileName1);
+                                       if(outputfile.open(QIODevice::WriteOnly | QIODevice::Text))
+                                       {
+                                               QTextStream edit(&outputfile);
+                                               for(int i=0;i<lines.size();i++)
+                                               {
+                                                   edit<<lines[i]<<endl;
+                                               }
+                                               outputfile.close();
+                                               QMessageBox::information(this,"提示","索引删除成功！",QMessageBox::Ok);
+                                       }
+
+
+                                  }
+
+
+                              }
+                              else//拼写有误或格式有误
+                              {
+                                  QMessageBox::information(this,"警告","请检查拼写是否正确！",QMessageBox::Ok);
+                                  ui->textInput->clear();
+                              }
+
+
+            }
+            else if (opt3 == 0)
+            {
+                QStringList list_0 = strExec.split(" ");
+                if (list_0[list_0.size() - 2] == "database" && list_0[list_0.size() - 3] == "in"){
+
+                    QString dbName = list_0[list_0.size() - 1];
+                    QString tail = list_0[list_0.size() - 3]+list_0[list_0.size() - 2]+list_0[list_0.size() - 1];
+                    strExec = strExec.left(strExec.length() - tail.length() - 3);
+
                     QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
                     QString fileName =  pathName+"/logfile.log";
                     QFile file(fileName);
@@ -727,58 +849,236 @@ void MainWindow::on_comfirmButton_clicked()
                         //打印信息：文件无法打开
                         file.close();
                     }
+                    qDebug() << tail << endl;
+                    qDebug() << strExec << endl;
 
+                    QStringList list_1 = strExec.split(" ");
+                    if (list_1.size() < 6 || list_1[1] != "table"){
+                        QMessageBox::information(this,"警告","无效关键词！",QMessageBox::Ok);
+                    }else if(list_1.size() == 6){
+                        QString tblName = list_1[2];
 
-                    QString FileName = QCoreApplication::applicationDirPath();
-                    QString pathName1 = FileName+"/data/"+username+"/"+dbName+"/"+s;//用户文件夹位置
-                    QString fileName1= pathName1+"/"+s+".tid";//存储字段相关信息
-                    QFile inputfile(fileName1);
-                    QStringList lines;
+                        if (list_1[3] == "drop" && list_1[4] == "column"){
+                            QString colName = list_1[5];
+                            //add here
+                            //qDebug() << "drop" + col_name << endl;
+                            QString FileName = QCoreApplication::applicationDirPath();
+                            QString pathName = FileName+"/data/"+username+"/"+dbName+"/"+tblName ;//表文件夹位置
+                            QString fileName1 = pathName+"/"+tblName+".tdf";
+                            QString fileName2 = pathName+"/"+tblName+".tic";
+                            QString delPath = QString(pathName);
 
-                    inputfile.open(QIODevice::ReadWrite|QIODevice::Text);
-                    if(inputfile.isOpen())
-                    {
-                        QTextStream out(&inputfile);
-                        QString data;
-                         while(!out.atEnd())
-                         {
-                             data = out.readLine();
-                             QStringList info=data.split("#");
-                             if(x!=info.at(0))
-                             {
-                                 //把不是该表的表信息复制到链里
-                                lines.push_back(data);
-                             }
-                        }
-                         inputfile.remove();
-                         QFile outputfile(fileName1);
-                         if(outputfile.open(QIODevice::WriteOnly | QIODevice::Text))
-                         {
-                                 QTextStream edit(&outputfile);
-                                 for(int i=0;i<lines.size();i++)
+                            QFile inputfile1(fileName1);
+                            QFile inputfile2(fileName2);
+
+                            QStringList lines;
+
+                            inputfile1.open(QIODevice::ReadWrite|QIODevice::Text);
+                            inputfile2.open(QIODevice::ReadWrite|QIODevice::Text);
+
+                            if(inputfile1.isOpen()&&inputfile2.isOpen()){
+                                QTextStream out1(&inputfile1);
+                                QTextStream out2(&inputfile2);
+
+                                QString data1;
+                                QString data2;
+
+                                 while(!out1.atEnd()){
+                                     data1 = out1.readLine();
+                                     QStringList data_=data1.split("#");
+                                     if(colName!=data_.at(0)){
+                                         //把不是该表的表信息复制到链里
+                                        lines.push_back(data1);
+                                     }
+                                }
+
+                                 while(!out2.atEnd()){
+                                     data2 = out2.readLine();
+                                     QStringList data_=data2.split("#");
+                                     if(colName!=data_.at(0)){
+                                         //把不是该表的表信息复制到链里
+                                        lines.push_back(data2);
+                                     }
+                                }
+
+                                 inputfile1.remove();
+                                 inputfile2.remove();
+
+                                 QFile outputfile1(fileName1);
+                                 QFile outputfile2(fileName2);
+
+                                 if(outputfile1.open(QIODevice::WriteOnly | QIODevice::Text))
                                  {
-                                     edit<<lines[i]<<endl;
+                                         QTextStream edit(&outputfile1);
+                                         for(int i=0;i<lines.size();i++){
+                                         edit<<lines[i]<<endl;
                                  }
-                                 outputfile.close();
-                                 QMessageBox::information(this,"提示","索引删除成功！",QMessageBox::Ok);
-                         }
+                                         outputfile1.close();
+                            }
+                                 if(outputfile2.open(QIODevice::WriteOnly | QIODevice::Text))
+                                 {
+                                         QTextStream edit(&outputfile2);
+                                         for(int i=0;i<lines.size();i++){
+                                         edit<<lines[i]<<endl;
+                                 }
+                                         outputfile2.close();
+                            }
+
+                                 QDir qDir(delPath);
+
+                            }
+                            QMessageBox::information(this,"警告","删除成功！",QMessageBox::Ok);
+
+                        }else{
+                            QMessageBox::information(this,"警告","无效关键词！",QMessageBox::Ok);
+                        }
+
+                    }else if(list_1.size() == 7){
+                        QString tblName = list_1[2];
+                        QString colName = list_1[5];
+                        QString colType = list_1[6];
+
+                        if (list_1[4] == "column"){
+                            if (list_1[3] == "add"){
+                                table tbl(username, dbName, tblName); //长度符合之后,创建表对象，传入用户名、库名和表名
+                                int db_exists = tbl.db_exists(username,dbName);//检查库是否已存在
+                                if(db_exists!=-1)
+                                {
+                                    QMessageBox::information(this,"警告","此数据库不存在！请先创建数据库。",QMessageBox::Ok);
+                                }
+                                else
+                                {
+                                    int tbl_exists = tbl.tbl_exists(username,dbName,tblName);//检查表是否已存在
+                                    if(tbl_exists==1)
+                                    {
+                                        QMessageBox::information(this,"警告","此表不存在！请先创建表。",QMessageBox::Ok);
+                                    }
+                                    else
+                                    {
+                                        QString FileName = QCoreApplication::applicationDirPath();
+                                        QString pathName = FileName+"/data/"+username+"/"+dbName+"/"+tblName+"/"+tblName+".tdf";//用户文件位置
+
+                                        QFile file(pathName);
+
+                                        QDir dir;
+
+                                        file.open(QIODevice::Append|QIODevice::Text);
+
+                                        if(file.isOpen()){
+                                             QFileInfo info(pathName);
+
+                                             QString dbInfo = colName + "#" + colType;
+
+                                             QTextStream out(&file);//写入
+
+                                             out << dbInfo<<endl;
+
+                                             file.close();
+                                             QMessageBox::information(this,"警告","添加成功！",QMessageBox::Ok);
+                                        }
+                                    }
+                                }
+                                //qDebug() << "add" + col_name << endl;
 
 
+                            }else if (list_1[3] == "modify"){
+                                QString FileName = QCoreApplication::applicationDirPath();
+                                QString pathName = FileName+"/data/"+username+"/"+dbName+"/"+tblName ;//表文件夹位置
+                                QString fileName = pathName+"/"+tblName+".tdf";
+                                QString delPath = QString(pathName);
+
+                                QFile inputfile(fileName);
+
+                                QStringList lines;
+
+                                inputfile.open(QIODevice::ReadWrite|QIODevice::Text);
+
+                                if(inputfile.isOpen()){
+                                    QTextStream out(&inputfile);
+
+                                    QString data;
+
+                                     while(!out.atEnd()){
+                                         data = out.readLine();
+                                         QStringList data_=data.split("#");
+                                         if(colName!=data_.at(0)){
+                                             //把不是该表的表信息复制到链里
+                                            lines.push_back(data);
+                                         }
+                                    }
+
+                                     inputfile.remove();
+
+                                     QFile outputfile(fileName);
+
+                                     if(outputfile.open(QIODevice::WriteOnly | QIODevice::Text))
+                                     {
+                                             QTextStream edit(&outputfile);
+                                             for(int i=0;i<lines.size();i++){
+                                             edit<<lines[i]<<endl;
+                                     }
+                                             outputfile.close();
+                                }
+
+                                     QDir qDir(delPath);
+
+                                }
+
+                                table tbl(username, dbName, tblName); //长度符合之后,创建表对象，传入用户名、库名和表名
+                                int db_exists = tbl.db_exists(username,dbName);//检查库是否已存在
+                                if(db_exists!=-1)
+                                {
+                                    QMessageBox::information(this,"警告","此数据库不存在！请先创建数据库。",QMessageBox::Ok);
+                                }
+                                else
+                                {
+                                    int tbl_exists = tbl.tbl_exists(username,dbName,tblName);//检查表是否已存在
+                                    if(tbl_exists==1)
+                                    {
+                                        QMessageBox::information(this,"警告","此表不存在！请先创建表。",QMessageBox::Ok);
+                                    }
+                                    else
+                                    {
+                                        QString FileName = QCoreApplication::applicationDirPath();
+                                        QString pathName = FileName+"/data/"+username+"/"+dbName+"/"+tblName+"/"+tblName+".tdf";//用户文件位置
+
+                                        QFile file(pathName);
+
+                                        QDir dir;
+
+                                        file.open(QIODevice::Append|QIODevice::Text);
+
+                                        if(file.isOpen()){
+                                             QFileInfo info(pathName);
+
+                                             QString dbInfo = colName + "#" + colType;
+
+                                             QTextStream out(&file);//写入
+
+                                             out << dbInfo<<endl;
+
+                                             file.close();
+                                             QMessageBox::information(this,"警告","修改成功！",QMessageBox::Ok);
+                                        }
+                                    }
+                                }
+
+
+
+
+                            }else{
+                                QMessageBox::information(this,"警告","无效关键词！",QMessageBox::Ok);
+                            }
+                        }else{
+                            QMessageBox::information(this,"警告","无效关键词！",QMessageBox::Ok);
+                        }
+
+                    }else{
+                        QMessageBox::information(this,"警告","无效关键词！",QMessageBox::Ok);
                     }
-
-
+                }else{
+                    QMessageBox::information(this,"警告","无效关键词！",QMessageBox::Ok);
                 }
-                else//拼写有误或格式有误
-                {
-                    QMessageBox::information(this,"警告","请检查拼写是否正确！",QMessageBox::Ok);
-                    ui->textInput->clear();
-                }
-
-            }
-            else if (opt3 == 0)
-            {
-                alter_(strExec);
-
             }
             //insert
             else if (opt4 == 0)//insert into 表名【(字段名,字段名...)】values(值,值,值...) in database 库名;（注意，作为值的字符串都要加单引号）//这是在一行里的
@@ -799,7 +1099,6 @@ void MainWindow::on_comfirmButton_clicked()
                     QStringList data_list = data_item.split(",");//按逗号分隔
                     QString db_name  =  strlist[8];//读取用户打开的的数据库名称
 
-                    //日志
                     QString dbName = db_name;
                     QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
                     QString fileName =  pathName+"/logfile.log";
@@ -881,10 +1180,9 @@ void MainWindow::on_comfirmButton_clicked()
                     QString db_name  =  strlist[7];//读取用户打开的的数据库名称
                     QStringList col_list;
 
-                    //日志
                     QString dbName = db_name;
                     QString pathName1 = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
-                    QString fileName1 =  pathName1+"/logfile.log";
+                    QString fileName1=  pathName1+"/logfile.log";
                     QFile file1(fileName1);
                     file1.open(QIODevice::Append|QIODevice::Text);
                     if(file1.isOpen())
@@ -987,7 +1285,6 @@ void MainWindow::on_comfirmButton_clicked()
                     QStringList data_item;
                     data_item.append(dataItem);
 
-                    //日志
 
                     QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
                     QString fileName =  pathName+"/logfile.log";
@@ -1047,7 +1344,24 @@ void MainWindow::on_comfirmButton_clicked()
             }
             else if (opt6 == 0)
             {
-                select_(strExec);
+                Sheet t = select_(strExec,username);
+                ui->tableWidget->clear();
+                ui->tableWidget->setColumnCount(t.getHead().size());//设置列数
+                ui->tableWidget->setRowCount(t.getData().size());//设置行数
+                for(int i = 0;i<t.getData().size();i++){
+                    for(int j = 0;j<t.getHead().size();j++){
+                        //表头
+                        ui->tableWidget->setHorizontalHeaderItem(
+                                    j,new QTableWidgetItem(
+                                        t.getHead()[j].get_name()));
+                        if(t.getData()[i][j] ==NULL){
+                            ui->tableWidget->setItem(i,j,new QTableWidgetItem(""));
+                        }else{
+                            ui->tableWidget->setItem(i,j,new QTableWidgetItem(t.getData()[i][j]));
+                        }
+                    }
+                }
+                ui->textInput->clear();
             }
             else if(opt7 == 0)
             {
@@ -1057,7 +1371,6 @@ void MainWindow::on_comfirmButton_clicked()
                 if(type == "database" && strlist[3]=="to")
                 {
                     Database db(username,strlist[4]);
-                    //日志
                     QString dbName = strlist[4];
                     QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
                     QString fileName =  pathName+"/logfile.log";
@@ -1079,27 +1392,20 @@ void MainWindow::on_comfirmButton_clicked()
                         file.close();
                     }
                     int op = db.rename_database(username, strlist[2], strlist[4]);
-                    if(op==1)
-                    {
+                    if(op==1){
                         QMessageBox::information(this,"提示","修改成功！",QMessageBox::Ok);
                     }
-                    if(op==-1)
-                    {
+                    if(op==-1){
                         QMessageBox::information(this,"警告","库不存在！",QMessageBox::Ok);
                     }
-                    if(op==-2)
-                    {
+                    if(op==-2){
                         QMessageBox::information(this,"警告","新库名早已存在！",QMessageBox::Ok);
                     }
-                    if(op == -3)
-                    {
+                    if(op == -3){
                         QMessageBox::information(this,"警告","新库名命名不规范！",QMessageBox::Ok);
                     }
-                }
-                else if(type == "table" && strlist[6] == "database"&&strlist[5]=="in"&&strlist[3]=="to"){
+                }else if(type == "table" && strlist[6] == "database"&&strlist[5]=="in"&&strlist[3]=="to"){
                     table tbl(username,strlist[7],strlist[4]);
-                    //日志
-
                     QString dbName = strlist[7];
                     QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
                     QString fileName =  pathName+"/logfile.log";
@@ -1152,9 +1458,6 @@ void MainWindow::on_comfirmButton_clicked()
                 QString letter = strlist[1];
                 if(letter == "database"){
                     QString dbname = strlist[2];    //这个数据库名记得传进各个函数里
-                    qDebug() << dbname << endl;
-                    Database db(username,dbname);
-                    //日志
                     QString dbName = dbname;
                     QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
                     QString fileName =  pathName+"/logfile.log";
@@ -1175,6 +1478,8 @@ void MainWindow::on_comfirmButton_clicked()
                         //打印信息：文件无法打开
                         file.close();
                     }
+                    qDebug() << dbname << endl;
+                    Database db(username,dbname);
                     int op = db.open_database(dbname,username);
                     if(op == -1){
                         QMessageBox::information(this,"警告","无效数据库名！",QMessageBox::Ok);
@@ -1192,8 +1497,6 @@ void MainWindow::on_comfirmButton_clicked()
                 QString letter = strlist[1];
                 if(letter == "database"){
                     QString dbname = strlist[2];
-                    //日志
-
                     QString dbName = dbname;
                     QString pathName = QCoreApplication::applicationDirPath()+"/data/"+username+"/"+dbName;
                     QString fileName =  pathName+"/logfile.log";
